@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "424926944986",
+    "firebase_url": "https://enlist-1706027673.firebaseio.com",
+    "project_id": "enlist-1706027673",
+    "storage_bucket": "enlist-1706027673.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424926944986:android:6365d77070c1e6add64fe3",
+        "android_client_info": {
+          "package_name": "id.ac.ui.cs.mobileprogramming.falya.enlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424926944986-j8nlfuqehkveqvnob7h0iu7b2dkdjtsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.ac.ui.cs.mobileprogramming.falya.enlist",
+            "certificate_hash": "18906ce5b30d9139afa4c229dae087fda28bc6fc"
+          }
+        },
+        {
+          "client_id": "424926944986-hp1bc7qgvpupbadmr0c93bau98tthcc9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZlWzych0XEUx33Q6ta0t_LsurIJgOz0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424926944986-hp1bc7qgvpupbadmr0c93bau98tthcc9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
