@@ -1,23 +1,25 @@
-package id.ac.ui.cs.mobileprogramming.falya.enlist
+package id.ac.ui.cs.mobileprogramming.falya.enlist.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.ItemListActivity
+import id.ac.ui.cs.mobileprogramming.falya.enlist.R
+import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.Constants.USER
 import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity : AppCompatActivity() {
     //Google Login Request Code
@@ -26,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     //Firebase Auth
     private lateinit var mAuth: FirebaseAuth
+    private var authViewModel: AuthViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this,gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         sign_in_button.setOnClickListener {
             signIn()
         }
@@ -66,6 +69,27 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun initAuthViewModel() {
+        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+    }
+
+    private fun createNewUser(authenticatedUser: User) {
+        authViewModel!!.createUser(authenticatedUser)
+        authViewModel!!.createdUserLiveData.observe(this, Observer { user: User ->
+            if (user.isCreated) {
+                Toast.makeText(this, user.name, Toast.LENGTH_LONG).show()
+            }
+            goToMainActivity(user)
+        })
+    }
+
+    private fun goToMainActivity(user: User) {
+        val intent = Intent(this@LoginActivity, LoginActivity::class.java)
+        intent.putExtra(USER, user)
+        startActivity(intent)
+        finish()
+    }
+
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.d("Login", "firebaseAuthWithGoogle:" + acct.id!!)
 
@@ -80,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("Login", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this,"Auth Failed",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Auth Failed", Toast.LENGTH_LONG).show()
                     updateUI(null)
                 }
 
@@ -99,7 +123,6 @@ class LoginActivity : AppCompatActivity() {
         if(user != null){
             //Do your Stuff
             startActivity(Intent(this, ItemListActivity::class.java))
-            Toast.makeText(this,"Hello ${user.displayName}",Toast.LENGTH_LONG).show()
         }
     }
 }

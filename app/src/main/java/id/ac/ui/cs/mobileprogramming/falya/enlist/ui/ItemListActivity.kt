@@ -1,6 +1,8 @@
-package id.ac.ui.cs.mobileprogramming.falya.enlist
+package id.ac.ui.cs.mobileprogramming.falya.enlist.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.core.widget.NestedScrollView
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import id.ac.ui.cs.mobileprogramming.falya.enlist.R
 
 import id.ac.ui.cs.mobileprogramming.falya.enlist.dummy.DummyContent
+import kotlinx.android.synthetic.main.activity_item_list.*
 
 /**
  * An activity representing a list of Pings. This activity
@@ -29,14 +39,21 @@ class ItemListActivity : AppCompatActivity() {
      * device.
      */
     private var twoPane: Boolean = false
+    private lateinit var mAuth: FirebaseAuth
+    @RequiresApi(Build.VERSION_CODES.O)
+    val currentDateTime = LocalDateTime.now()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
+        mAuth = FirebaseAuth.getInstance()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.title = title
+
+        updateUI(mAuth.currentUser)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -52,6 +69,17 @@ class ItemListActivity : AppCompatActivity() {
         }
 
         setupRecyclerView(findViewById(R.id.item_list))
+    }
+
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateUI(user: FirebaseUser?){
+        if(user != null){
+            //Do your Stuff
+            name.text = "Hello, ${user.displayName}"
+            date.text = "Today is ${currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))}"
+            totalList.text= "You have 3 list(s) to do"
+        }
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
