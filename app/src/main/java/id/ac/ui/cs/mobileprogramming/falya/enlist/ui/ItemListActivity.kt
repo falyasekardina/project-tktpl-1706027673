@@ -4,26 +4,27 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.core.widget.NestedScrollView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.widget.Toolbar
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
-
 import id.ac.ui.cs.mobileprogramming.falya.enlist.dummy.DummyContent
 import kotlinx.android.synthetic.main.activity_item_list.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  * An activity representing a list of Pings. This activity
@@ -42,6 +43,7 @@ class ItemListActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDateTime = LocalDateTime.now()
+    private var botAppBar: BottomAppBar? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class ItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         updateUI(mAuth.currentUser)
+        home()
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -71,13 +74,23 @@ class ItemListActivity : AppCompatActivity() {
         setupRecyclerView(findViewById(R.id.item_list))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.navigation, menu)
+        return true
+    }
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateUI(user: FirebaseUser?){
         if(user != null){
             //Do your Stuff
             name.text = "Hello, ${user.displayName}"
-            date.text = "Today is ${currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))}"
+            date.text = "Today is ${currentDateTime.format(
+                DateTimeFormatter.ofLocalizedDate(
+                    FormatStyle.FULL
+                )
+            )}"
             totalList.text= "You have 3 list(s) to do"
         }
     }
@@ -86,9 +99,16 @@ class ItemListActivity : AppCompatActivity() {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
     }
 
-    class SimpleItemRecyclerViewAdapter(private val parentActivity: ItemListActivity,
-                                        private val values: List<DummyContent.DummyItem>,
-                                        private val twoPane: Boolean) :
+    private fun home() {
+        intent = Intent(this, ItemListActivity::class.java)
+        startActivity(intent)
+    }
+
+    class SimpleItemRecyclerViewAdapter(
+        private val parentActivity: ItemListActivity,
+        private val values: List<DummyContent.DummyItem>,
+        private val twoPane: Boolean
+    ) :
             RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         private val onClickListener: View.OnClickListener
