@@ -4,16 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_item_list.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.*
 
 /**
  * An activity representing a list of Pings. This activity
@@ -34,6 +36,7 @@ import java.time.format.FormatStyle
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
+@Suppress("DEPRECATION")
 class ItemListActivity : AppCompatActivity() {
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -41,9 +44,16 @@ class ItemListActivity : AppCompatActivity() {
      */
     private var twoPane: Boolean = false
     private lateinit var mAuth: FirebaseAuth
+    private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    //language
+    lateinit var locale: Locale
+    private var currentLanguage = "en"
+//    private var currentLang: String? = null
+
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDateTime = LocalDateTime.now()
-    private var botAppBar: BottomAppBar? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +66,8 @@ class ItemListActivity : AppCompatActivity() {
         toolbar.title = title
 
         updateUI(mAuth.currentUser)
-        home()
+        initGoogleSignInClient()
+        setSupportActionBar(bottomMenuBar)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -74,10 +85,63 @@ class ItemListActivity : AppCompatActivity() {
         setupRecyclerView(findViewById(R.id.item_list))
     }
 
+    private fun initGoogleSignInClient() {
+        val googleSignInOptions : GoogleSignInOptions = GoogleSignInOptions.Builder(
+            GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.navigation, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.appbar_home -> {
+                Toast.makeText(this, "HOME CLICKED", Toast.LENGTH_LONG).show()
+                home()
+                return true
+            }
+            R.id.appbar_history -> {
+                Toast.makeText(this, "HISTORY CLICKED", Toast.LENGTH_LONG).show()
+                history()
+                return true
+            }
+            R.id.app_bar_signout -> {
+                signOut()
+                return true
+            }
+            R.id.app_bar_indonesian -> {
+                setLocale("in")
+            }
+            R.id.app_bar_english -> {
+                setLocale("en")
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    //language
+    private fun setLocale(localeName: String) {
+        if (localeName != currentLanguage) {
+            locale = Locale(localeName)
+            val res = resources
+            val dm = res.displayMetrics
+            val conf = res.configuration
+            conf.locale = locale
+            res.updateConfiguration(conf, dm)
+            val refresh = Intent(
+                this,
+                ItemListActivity::class.java
+            )
+            refresh.putExtra(currentLanguage, localeName)
+            startActivity(refresh)
+        } else {
+            Toast.makeText(
+                this@ItemListActivity, "Language, , already, , selected)!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -100,8 +164,28 @@ class ItemListActivity : AppCompatActivity() {
     }
 
     private fun home() {
-        intent = Intent(this, ItemListActivity::class.java)
+    }
+
+    private fun history() {
+        intent = Intent(this, ItemDetailActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun signOut() {
+        singOutFirebase()
+        signOutGoogle()
+        val i = baseContext.packageManager
+            .getLaunchIntentForPackage(baseContext.packageName)
+        i!!.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(i)
+    }
+
+    private fun singOutFirebase() {
+        firebaseAuth.signOut()
+    }
+
+    private fun signOutGoogle() {
+        googleSignInClient.signOut()
     }
 
     class SimpleItemRecyclerViewAdapter(

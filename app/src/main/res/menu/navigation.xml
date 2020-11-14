@@ -2,23 +2,38 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/home"
-        android:icon="@drawable/logo_main"
+    <item android:id="@+id/appbar_home"
+        android:icon="@drawable/ic_home"
         android:title="Home"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/history"
-        android:icon="@drawable/logo_main"
+    <item android:id="@+id/appbar_history"
+        android:icon="@drawable/ic_history"
         app:showAsAction="ifRoom"
         android:title="History" />
 
-    <item android:id="@+id/settings"
+    <item android:id="@+id/appbar_settings"
         android:icon="@drawable/logo_main"
         app:showAsAction="ifRoom"
-        android:title="Settings" />
+        android:title="@string/settings" />
 
-    <item android:id="@+id/profile"
+    <item android:id="@+id/appbar_profile"
         android:icon="@drawable/logo_main"
         app:showAsAction="ifRoom"
         android:title="Profile" />
+
+    <item android:id="@+id/app_bar_signout"
+        android:icon="@drawable/logo_main"
+        app:showAsAction="ifRoom"
+        android:title="Sign Out" />
+
+    <item android:id="@+id/app_bar_indonesian"
+        android:icon="@drawable/logo_main"
+        app:showAsAction="ifRoom"
+        android:title="Indonesia" />
+
+    <item android:id="@+id/app_bar_english"
+        android:icon="@drawable/logo_main"
+        app:showAsAction="ifRoom"
+        android:title="English" />
 </menu>
