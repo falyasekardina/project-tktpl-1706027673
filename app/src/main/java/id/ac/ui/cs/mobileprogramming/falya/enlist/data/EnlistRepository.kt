@@ -2,7 +2,7 @@ package id.ac.ui.cs.mobileprogramming.falya.enlist.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistDAO
+import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistDao
 import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistDatabase
 import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistRecord
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import kotlinx.coroutines.runBlocking
  */
 class EnlistRepository(application: Application) {
 
-    private val enlistDao: EnlistDAO
+    private val enlistDao: EnlistDao
     private val allTodos: LiveData<List<EnlistRecord>>
 
     init {

@@ -10,16 +10,16 @@ import androidx.room.Dao
  */
 
 @Dao
-interface EnlistDAO {
+interface EnlistDao {
 
     @Insert
-    suspend fun saveTodo(enlistRecord: EnlistRecord)
+    fun saveTodo(enlistRecord: EnlistRecord)
 
     @Delete
-    suspend fun deleteTodo(enlistRecord: EnlistRecord)
+    fun deleteTodo(enlistRecord: EnlistRecord)
 
     @Update
-    suspend fun updateTodo(enlistRecord: EnlistRecord)
+    fun updateTodo(enlistRecord: EnlistRecord)
 
     @Query("SELECT * FROM todo ORDER BY id DESC")
     fun getAllTodoList(): LiveData<List<EnlistRecord>>

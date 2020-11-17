@@ -13,7 +13,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [EnlistRecord::class], version = 1, exportSchema = false)
 abstract class EnlistDatabase : RoomDatabase() {
 
-    abstract fun todoDao(): EnlistDAO
+    abstract fun todoDao(): EnlistDao
 
     companion object {
         private var INSTANCE: EnlistDatabase? = null

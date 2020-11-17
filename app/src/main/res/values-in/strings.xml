@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Enlist</string>
     <string name="settings">Pengaturan</string>
-    <string name="delete">delete</string>
-    <string name="save">Save</string>
-    <string name="enter_title">Enter Title</string>
-    <string name="enter_content">Enter Content</string>
-    <string name="pleaseEnterTitle">Please enter title</string>
-    <string name="pleaseEnterContent">Please enter content</string>
-    <string name="viewOrEditTodo">View/Edit Todo</string>
-    <string name="createTodo">Create Todo</string>
-    <string name="title">Title</string>
-    <string name="content">Content</string>
-    <string name="search">Search</string>
-    <string name="search_here">Search here</string>
+    <string name="delete">Hapus</string>
+    <string name="save">Simpan</string>
+    <string name="enter_title">Judul</string>
+    <string name="enter_content">Deskripsi</string>
+    <string name="pleaseEnterTitle">Masukkan judul</string>
+    <string name="pleaseEnterContent">Masukkan deskripsi</string>
+    <string name="viewOrEditTodo">Lihat/Ubah list</string>
+    <string name="createTodo">Buat list</string>
+    <string name="title">Judul</string>
+    <string name="content">Deskripsi</string>
+    <string name="search">Cari</string>
+    <string name="search_here">Cari disini</string>
 </resources>
