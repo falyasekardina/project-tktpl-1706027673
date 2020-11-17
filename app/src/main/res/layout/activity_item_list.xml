@@ -55,11 +55,13 @@
             android:textColor="@color/colorDark"
             android:textSize="20sp" />
 
-        <include
-            layout="@layout/item_list"
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp" />
+            android:id="@+id/rv_todo_list"
+            android:layout_marginTop="130dp"
+            tools:listitem="@layout/enlist_item"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

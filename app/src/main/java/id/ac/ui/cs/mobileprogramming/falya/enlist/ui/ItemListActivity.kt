@@ -1,27 +1,36 @@
 package id.ac.ui.cs.mobileprogramming.falya.enlist.ui
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.widget.NestedScrollView
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
+import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistRecord
 import id.ac.ui.cs.mobileprogramming.falya.enlist.dummy.DummyContent
+import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.createEnlist.CreateEnlistActivity
+import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistAdapter
+import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistViewModel
+import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.Constants
 import kotlinx.android.synthetic.main.activity_item_list.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -37,7 +46,7 @@ import java.util.*
  * item details side-by-side using two vertical panes.
  */
 @Suppress("DEPRECATION")
-class ItemListActivity : AppCompatActivity() {
+class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -47,13 +56,13 @@ class ItemListActivity : AppCompatActivity() {
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    //language
-    lateinit var locale: Locale
-    private var currentLanguage = "en"
-//    private var currentLang: String? = null
-
     @RequiresApi(Build.VERSION_CODES.O)
     val currentDateTime = LocalDateTime.now()
+
+    //ViewModel
+    private lateinit var todoViewModel: EnlistViewModel
+    private lateinit var searchView: SearchView
+    private lateinit var todoAdapter: EnlistAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,19 +79,34 @@ class ItemListActivity : AppCompatActivity() {
         setSupportActionBar(bottomMenuBar)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            resetSearchView()
+            val intent = Intent(this@ItemListActivity, CreateEnlistActivity::class.java)
+            startActivityForResult(intent, Constants.INTENT_CREATE_TODO)
         }
 
-        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            twoPane = true
-        }
+//DEFAULT
+//        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
+//            // The detail container view will be present only in the
+//            // large-screen layouts (res/values-w900dp).
+//            // If this view is present, then the
+//            // activity should be in two-pane mode.
+//            twoPane = true
+//        }
+//
+//        setupRecyclerView(findViewById(R.id.item_list))
 
-        setupRecyclerView(findViewById(R.id.item_list))
+        //Setting up RecyclerView
+        rv_todo_list.layoutManager = LinearLayoutManager(this)
+        todoAdapter = EnlistAdapter(this)
+        rv_todo_list.adapter = todoAdapter
+
+
+        //Setting up ViewModel and LiveData
+        todoViewModel = ViewModelProviders.of(this).get(EnlistViewModel::class.java)
+        todoViewModel.getAllTodoList().observe(this, Observer {
+            todoAdapter.setAllTodoItems(it)
+        })
+
     }
 
     private fun initGoogleSignInClient() {
@@ -113,36 +137,36 @@ class ItemListActivity : AppCompatActivity() {
                 signOut()
                 return true
             }
-            R.id.app_bar_indonesian -> {
-                setLocale("in")
-            }
-            R.id.app_bar_english -> {
-                setLocale("en")
-            }
+//            R.id.app_bar_indonesian -> {
+//                setLocale("in")
+//            }
+//            R.id.app_bar_english -> {
+//                setLocale("en")
+//            }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    //language
-    private fun setLocale(localeName: String) {
-        if (localeName != currentLanguage) {
-            locale = Locale(localeName)
-            val res = resources
-            val dm = res.displayMetrics
-            val conf = res.configuration
-            conf.locale = locale
-            res.updateConfiguration(conf, dm)
-            val refresh = Intent(
-                this,
-                ItemListActivity::class.java
-            )
-            refresh.putExtra(currentLanguage, localeName)
-            startActivity(refresh)
-        } else {
-            Toast.makeText(
-                this@ItemListActivity, "Language, , already, , selected)!", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    //language
+//    private fun setLocale(localeName: String) {
+//        if (localeName != currentLanguage) {
+//            locale = Locale(localeName)
+//            val res = resources
+//            val dm = res.displayMetrics
+//            val conf = res.configuration
+//            conf.locale = locale
+//            res.updateConfiguration(conf, dm)
+//            val refresh = Intent(
+//                this,
+//                ItemListActivity::class.java
+//            )
+//            refresh.putExtra(currentLanguage, localeName)
+//            startActivity(refresh)
+//        } else {
+//            Toast.makeText(
+//                this@ItemListActivity, "Language, , already, , selected)!", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -186,6 +210,62 @@ class ItemListActivity : AppCompatActivity() {
 
     private fun signOutGoogle() {
         googleSignInClient.signOut()
+    }
+
+    /**
+     * RecyclerView Item callbacks
+     * */
+    //Callback when user clicks on Delete note
+    override fun onDeleteClicked(todoRecord: EnlistRecord) {
+        todoViewModel.deleteTodo(todoRecord)
+    }
+
+    //Callback when user clicks on view note
+    override fun onViewClicked(todoRecord: EnlistRecord) {
+        resetSearchView()
+        val intent = Intent(this@ItemListActivity, CreateEnlistActivity::class.java)
+        intent.putExtra(Constants.INTENT_OBJECT, todoRecord)
+        startActivityForResult(intent, Constants.INTENT_UPDATE_TODO)
+    }
+
+
+    /**
+     * Activity result callback
+     * Triggers when Save button clicked from @CreateTodoActivity
+     * */
+    @SuppressLint("MissingSuperCall")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val todoRecord = data?.getParcelableExtra<EnlistRecord>(Constants.INTENT_OBJECT)!!
+            when (requestCode) {
+                Constants.INTENT_CREATE_TODO -> {
+                    todoViewModel.saveTodo(todoRecord)
+                }
+                Constants.INTENT_UPDATE_TODO -> {
+                    todoViewModel.updateTodo(todoRecord)
+                }
+            }
+        }
+    }
+
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        return when (item?.itemId) {
+//            R.id.search_todo -> true
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
+
+    override fun onBackPressed() {
+        resetSearchView()
+        super.onBackPressed()
+    }
+
+    private fun resetSearchView() {
+        if (!searchView.isIconified) {
+            searchView.isIconified = true
+            return
+        }
     }
 
     class SimpleItemRecyclerViewAdapter(
