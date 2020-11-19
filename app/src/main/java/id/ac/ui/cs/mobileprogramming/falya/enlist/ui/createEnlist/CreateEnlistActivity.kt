@@ -2,8 +2,6 @@ package id.ac.ui.cs.mobileprogramming.falya.enlist.ui.createEnlist
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
 import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistRecord
@@ -29,6 +27,7 @@ class CreateEnlistActivity : AppCompatActivity() {
             this.todoRecord = todoRecord
             prePopulateData(todoRecord)
         }
+        save_todo.setOnClickListener { saveTodo() }
 
         title = if (todoRecord != null) getString(R.string.viewOrEditTodo) else getString(R.string.createTodo)
     }
@@ -38,22 +37,17 @@ class CreateEnlistActivity : AppCompatActivity() {
         et_todo_content.setText(todoRecord.content)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.save_todo -> {
-                saveTodo()
-            }
-        }
-        return true
-    }
-
     /**
      * Sends the updated information back to calling Activity
      * */
     private fun saveTodo() {
         if (validateFields()) {
             val id = if (todoRecord != null) todoRecord?.id else null
-            val todo = EnlistRecord(id = id, title = et_todo_title.text.toString(), content = et_todo_content.text.toString())
+            val todo = EnlistRecord(
+                id = id,
+                title = et_todo_title.text.toString(),
+                content = et_todo_content.text.toString()
+            )
             val intent = Intent()
             intent.putExtra(Constants.INTENT_OBJECT, todo)
             setResult(RESULT_OK, intent)

@@ -36,7 +36,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/black"
                 tools:text="@string/title" />
 
             <TextView

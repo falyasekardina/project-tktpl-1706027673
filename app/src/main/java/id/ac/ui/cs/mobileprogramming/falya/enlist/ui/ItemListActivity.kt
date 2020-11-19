@@ -1,21 +1,22 @@
 package id.ac.ui.cs.mobileprogramming.falya.enlist.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.SearchManager
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.SearchView
+import android.widget.Button
+import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModelProviders
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
+import id.ac.ui.cs.mobileprogramming.falya.enlist.broadcast.NotificationPublisher
 import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistRecord
 import id.ac.ui.cs.mobileprogramming.falya.enlist.dummy.DummyContent
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.createEnlist.CreateEnlistActivity
@@ -32,6 +34,7 @@ import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistAdapter
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistViewModel
 import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.Constants
 import kotlinx.android.synthetic.main.activity_item_list.*
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -61,7 +64,6 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
 
     //ViewModel
     private lateinit var todoViewModel: EnlistViewModel
-    private lateinit var searchView: SearchView
     private lateinit var todoAdapter: EnlistAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -79,21 +81,9 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
         setSupportActionBar(bottomMenuBar)
 
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            resetSearchView()
             val intent = Intent(this@ItemListActivity, CreateEnlistActivity::class.java)
             startActivityForResult(intent, Constants.INTENT_CREATE_TODO)
         }
-
-//DEFAULT
-//        if (findViewById<NestedScrollView>(R.id.item_detail_container) != null) {
-//            // The detail container view will be present only in the
-//            // large-screen layouts (res/values-w900dp).
-//            // If this view is present, then the
-//            // activity should be in two-pane mode.
-//            twoPane = true
-//        }
-//
-//        setupRecyclerView(findViewById(R.id.item_list))
 
         //Setting up RecyclerView
         rv_todo_list.layoutManager = LinearLayoutManager(this)
@@ -111,7 +101,8 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
 
     private fun initGoogleSignInClient() {
         val googleSignInOptions : GoogleSignInOptions = GoogleSignInOptions.Builder(
-            GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            GoogleSignInOptions.DEFAULT_SIGN_IN
+        ).build()
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
     }
 
@@ -124,25 +115,17 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.appbar_home -> {
-                Toast.makeText(this, "HOME CLICKED", Toast.LENGTH_LONG).show()
                 home()
                 return true
             }
-            R.id.appbar_history -> {
-                Toast.makeText(this, "HISTORY CLICKED", Toast.LENGTH_LONG).show()
-                history()
+            R.id.appbar_timer -> {
+                studyTimer()
                 return true
             }
             R.id.app_bar_signout -> {
                 signOut()
                 return true
             }
-//            R.id.app_bar_indonesian -> {
-//                setLocale("in")
-//            }
-//            R.id.app_bar_english -> {
-//                setLocale("en")
-//            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -174,12 +157,12 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
         if(user != null){
             //Do your Stuff
             name.text = "Hello, ${user.displayName}"
-            date.text = "Today is ${currentDateTime.format(
+            date_now.text = "Today is ${currentDateTime.format(
                 DateTimeFormatter.ofLocalizedDate(
                     FormatStyle.FULL
                 )
             )}"
-            totalList.text= "You have 3 list(s) to do"
+            totalList.text= "You have 10 list(s) to do"
         }
     }
 
@@ -190,8 +173,8 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
     private fun home() {
     }
 
-    private fun history() {
-        intent = Intent(this, ItemDetailActivity::class.java)
+    private fun studyTimer() {
+        intent = Intent(this, StudyTimerActivity::class.java)
         startActivity(intent)
     }
 
@@ -222,7 +205,6 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
 
     //Callback when user clicks on view note
     override fun onViewClicked(todoRecord: EnlistRecord) {
-        resetSearchView()
         val intent = Intent(this@ItemListActivity, CreateEnlistActivity::class.java)
         intent.putExtra(Constants.INTENT_OBJECT, todoRecord)
         startActivityForResult(intent, Constants.INTENT_UPDATE_TODO)
@@ -249,23 +231,8 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
         }
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-//        return when (item?.itemId) {
-//            R.id.search_todo -> true
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
     override fun onBackPressed() {
-        resetSearchView()
         super.onBackPressed()
-    }
-
-    private fun resetSearchView() {
-        if (!searchView.isIconified) {
-            searchView.isIconified = true
-            return
-        }
     }
 
     class SimpleItemRecyclerViewAdapter(

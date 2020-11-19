@@ -26,10 +26,10 @@ class EnlistAdapter(todoEvents: ItemListActivity) : RecyclerView.Adapter<EnlistA
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = filteredTodoList.size
+    override fun getItemCount(): Int = todoList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(filteredTodoList[position], listener)
+        holder.bind(todoList[position], listener)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -38,7 +38,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/date_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
@@ -56,12 +56,12 @@
             android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
             android:id="@+id/rv_todo_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="130dp"
-            tools:listitem="@layout/enlist_item"
-            android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_marginBottom="45dp"
+            tools:listitem="@layout/enlist_item" />
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

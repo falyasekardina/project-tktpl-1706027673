@@ -7,15 +7,10 @@
         android:title="Home"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/appbar_history"
-        android:icon="@drawable/ic_history"
+    <item android:id="@+id/appbar_timer"
+        android:icon="@drawable/ic_timer"
         app:showAsAction="ifRoom"
-        android:title="History" />
-
-    <item android:id="@+id/appbar_settings"
-        android:icon="@drawable/logo_main"
-        app:showAsAction="ifRoom"
-        android:title="@string/settings" />
+        android:title="Study Timer" />
 
     <item android:id="@+id/appbar_profile"
         android:icon="@drawable/logo_main"
@@ -26,14 +21,4 @@
         android:icon="@drawable/logo_main"
         app:showAsAction="ifRoom"
         android:title="Sign Out" />
-
-    <item android:id="@+id/app_bar_indonesian"
-        android:icon="@drawable/logo_main"
-        app:showAsAction="ifRoom"
-        android:title="Indonesia" />
-
-    <item android:id="@+id/app_bar_english"
-        android:icon="@drawable/logo_main"
-        app:showAsAction="ifRoom"
-        android:title="English" />
 </menu>
