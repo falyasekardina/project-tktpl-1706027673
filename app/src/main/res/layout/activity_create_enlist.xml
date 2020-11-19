@@ -10,7 +10,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_semibold"
         android:textSize="24sp"
-        android:text="Create List"
+        android:text="@string/title"
         android:textAlignment="center" />
 
     <LinearLayout
@@ -60,7 +60,7 @@
             android:id="@+id/save_todo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:text="@string/save_button" />
 
     </LinearLayout>
 

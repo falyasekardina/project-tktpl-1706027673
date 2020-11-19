@@ -5,6 +5,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -15,6 +16,7 @@ import id.ac.ui.cs.mobileprogramming.falya.enlist.R
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.notifications.TimerExpiredReceiver
 import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.NotificationUtil
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.timer
 
 
 class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
@@ -31,7 +33,7 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     enum class TimerStatus {
-        STARTED, STOPPED
+        STARTED, STOPPED, PAUSED
     }
 
     private var timerStatus = TimerStatus.STOPPED
@@ -40,11 +42,14 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
     private var textViewTime: TextView? = null
     private var imageViewReset: ImageView? = null
     private var imageViewStartStop: ImageView? = null
+    private var buttonAddSong: Button? = null
     private var countDownTimer: CountDownTimer? = null
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_study_time)
+        mediaPlayer = MediaPlayer.create(applicationContext,R.raw.alarm_set)
 
         // method call to initialize the views
         initViews()
@@ -96,22 +101,39 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun startStop() {
         if (timerStatus == TimerStatus.STOPPED) {
-            NotificationUtil.showTimerRunning(this)
-            // call to initialize the timer values
-            setTimerValues()
-            // call to initialize the progress bar values
-            setProgressBarValues()
-            // showing the reset icon
-            imageViewReset!!.visibility = View.VISIBLE
-            // changing play icon to stop icon
-            imageViewStartStop!!.setImageResource(R.drawable.ic_stop)
-            // making edit text not editable
-            editTextMinute!!.isEnabled = false
-            // changing the timer status to started
-            timerStatus = TimerStatus.STARTED
-            // call to start the count down timer
-            startCountDownTimer()
+            if (mediaPlayer.isPlaying) {
+                Log.d("kesini gak", "is playing")
+                mediaPlayer.stop()
+                mediaPlayer.reset()
+                mediaPlayer.release()
+                // hiding the reset icon
+                imageViewReset!!.visibility = View.GONE
+                // changing stop icon to start icon
+                imageViewStartStop!!.setImageResource(R.drawable.ic_start)
+                // making edit text editable
+                editTextMinute!!.isEnabled = true
+                NotificationUtil.showTimerStopped(this)
+            }
+            else {
+                Log.d("kesini gak", "else is playing")
+                NotificationUtil.showTimerRunning(this)
+                // call to initialize the timer values
+                setTimerValues()
+                // call to initialize the progress bar values
+                setProgressBarValues()
+                // showing the reset icon
+                imageViewReset!!.visibility = View.VISIBLE
+                // changing play icon to stop icon
+                imageViewStartStop!!.setImageResource(R.drawable.ic_stop)
+                // making edit text not editable
+                editTextMinute!!.isEnabled = false
+                // changing the timer status to started
+                timerStatus = TimerStatus.STARTED
+                // call to start the count down timer
+                startCountDownTimer()
+            }
         } else {
+            Log.d("kesini gak", "else")
             // hiding the reset icon
             imageViewReset!!.visibility = View.GONE
             // changing stop icon to start icon
@@ -144,14 +166,12 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
         // assigning values after converting to milliseconds
         Log.d("time", time.toString())
         timeCountInMilliSeconds = (time * 60 * 1000).toLong()
-//        Log.d("nowseconds", nowSeconds)
     }
 
     /**
      * method to start count down timer
      */
     private fun startCountDownTimer() {
-        Log.d("nowseconds", timeCountInMilliSeconds.toString())
         countDownTimer = object : CountDownTimer(timeCountInMilliSeconds, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 textViewTime!!.text = hmsTimeFormatter(millisUntilFinished)
@@ -162,14 +182,11 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
                 textViewTime!!.text = hmsTimeFormatter(timeCountInMilliSeconds)
                 // call to initialize the progress bar values
                 setProgressBarValues()
-                // hiding the reset icon
-                imageViewReset!!.visibility = View.GONE
-                // changing stop icon to start icon
-                imageViewStartStop!!.setImageResource(R.drawable.ic_start)
-                // making edit text editable
-                editTextMinute!!.isEnabled = true
-                // changing the timer status to stopped
+                // play music
                 timerStatus = TimerStatus.STOPPED
+                stopCountDownTimer()
+                mediaPlayer.start()
+                NotificationUtil.showTimerStopped(this@StudyTimerActivity)
             }
         }.start()
         countDownTimer!!.start()

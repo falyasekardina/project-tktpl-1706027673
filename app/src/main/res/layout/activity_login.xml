@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:fontFamily="@font/poppins_bold"
-        android:text="What are we going to do"
+        android:text="@string/login_first"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/poppins_light"
-        android:text="Thousand of people are using enlist for list their studies"
+        android:text="@string/login_second"
         android:textAlignment="center"
         android:textSize="18sp" />
 

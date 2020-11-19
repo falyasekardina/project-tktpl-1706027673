@@ -1,16 +1,19 @@
 <resources>
-    <string name="app_name">Enlist</string>
-    <string name="settings">Pengaturan</string>
-    <string name="delete">Hapus</string>
-    <string name="save">Simpan</string>
-    <string name="enter_title">Judul</string>
-    <string name="enter_content">Deskripsi</string>
-    <string name="pleaseEnterTitle">Masukkan judul</string>
-    <string name="pleaseEnterContent">Masukkan deskripsi</string>
-    <string name="viewOrEditTodo">Lihat/Ubah list</string>
-    <string name="createTodo">Buat list</string>
-    <string name="title">Judul</string>
-    <string name="content">Deskripsi</string>
-    <string name="search">Cari</string>
-    <string name="search_here">Cari disini</string>
+    <string name="app_name" translatable="false">Enlist</string>
+    <string name="login_first">Apa yang ingin kamu lakukan hari ini?</string>
+    <string name="login_second">Sudah ribuan orang telah menggunakan Enlist untuk mengatur belajar mereka</string>
+    <string name="delete">delete</string>
+    <string name="enter_title" >Masukkan Judul</string>v
+    <string name="enter_content">Masukkan Deskripsi</string>v
+    <string name="save_button">Simpan</string>
+    <string name="pleaseEnterTitle" translatable="false">Silakan memasukkan judul</string>
+    <string name="pleaseEnterContent" translatable="false">Silakan memasukkan deskripsi</string>
+    <string name="viewOrEditTodo" translatable="false">Lihat/Ubah Daftar</string>
+    <string name="createTodo" translatable="false">Membuat Daftar</string>
+    <string name="title">Buat Daftar</string>
+    <string name="hint_minute">Menit</string>
+    <string name="message_minutes">Harap masukkan menit</string>
+    <string name="home">Beranda</string>
+    <string name="sign_out">Keluar</string>
+    <string name="description_alarm">Atur waktu belajarmu untuk tetap fokus dan produktif</string>
 </resources>

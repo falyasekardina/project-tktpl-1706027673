@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:contentDescription="@string/delete"
+            android:contentDescription="Delete"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <LinearLayout
