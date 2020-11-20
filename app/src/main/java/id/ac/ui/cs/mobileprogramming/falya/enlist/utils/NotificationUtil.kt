@@ -14,9 +14,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.StudyTimerActivity
-import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.notifications.TimerNotificationActionReceiver
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class NotificationUtil {
@@ -26,12 +23,6 @@ class NotificationUtil {
         private const val TIMER_ID = 0
 
         fun showTimerRunning(context: Context) {
-            val stopIntent = Intent(context, TimerNotificationActionReceiver::class.java)
-            stopIntent.action = AppConstants.ACTION_STOP
-            val stopPendingIntent = PendingIntent.getBroadcast(
-                context,
-                0, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT
-            )
 
             val nBuilder = getBasicNotificationBuilder(context, CHANNEL_ID_TIMER, true)
             nBuilder.setContentTitle("Timer is Running")
@@ -53,12 +44,6 @@ class NotificationUtil {
         }
 
         fun showTimerStopped(context: Context) {
-            val startIntent = Intent(context, TimerNotificationActionReceiver::class.java)
-            startIntent.action = AppConstants.ACTION_START
-            val resumePendingIntent = PendingIntent.getBroadcast(
-                context,
-                0, startIntent, PendingIntent.FLAG_UPDATE_CURRENT
-            )
 
             val nBuilder = getBasicNotificationBuilder(context, CHANNEL_ID_TIMER, true)
             nBuilder.setContentTitle("Timer is stopped")
@@ -70,7 +55,6 @@ class NotificationUtil {
                     )
                 )
                 .setOngoing(true)
-//                .addAction(R.drawable.ic_start, "Start", resumePendingIntent)
 
             val nManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

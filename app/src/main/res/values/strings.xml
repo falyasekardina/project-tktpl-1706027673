@@ -3,11 +3,12 @@
     <string name="login_first">What are we going to do</string>
     <string name="login_second">Thousand of people are using enlist for list their studies</string>
     <string name="delete">delete</string>
+    <string name="add_image">Add Image</string>
     <string name="enter_title">Enter Title</string>
-    <string name="enter_content">Enter Content</string>
+    <string name="enter_content">Enter Description</string>
     <string name="save_button">Save</string>
     <string name="pleaseEnterTitle">Please enter title</string>
-    <string name="pleaseEnterContent">Please enter content</string>
+    <string name="pleaseEnterContent">Please enter description</string>
     <string name="viewOrEditTodo">View/Edit Todo</string>
     <string name="createTodo" translatable="false">Create Todo</string>
     <string name="title">Create List</string>

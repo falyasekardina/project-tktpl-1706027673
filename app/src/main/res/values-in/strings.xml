@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Enlist</string>
+    <string name="add_image">Ubah Gambar</string>
     <string name="login_first">Apa yang ingin kamu lakukan hari ini?</string>
     <string name="login_second">Sudah ribuan orang telah menggunakan Enlist untuk mengatur belajar mereka</string>
     <string name="delete">delete</string>

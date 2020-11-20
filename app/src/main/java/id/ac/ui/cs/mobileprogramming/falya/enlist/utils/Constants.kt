@@ -11,5 +11,4 @@ object Constants {
     const val INTENT_UPDATE_TODO = 2
 
     var USER = "user"
-    var USERS = "users"
 }

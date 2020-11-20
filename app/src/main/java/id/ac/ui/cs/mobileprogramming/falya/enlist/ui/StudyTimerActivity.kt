@@ -1,10 +1,5 @@
 package id.ac.ui.cs.mobileprogramming.falya.enlist.ui
 
-
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -13,27 +8,15 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
-import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.notifications.TimerExpiredReceiver
 import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.NotificationUtil
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timer
 
 
 class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
     private var timeCountInMilliSeconds = 1 * 60000.toLong()
 
-    companion object {
-
-        fun removeAlarm(context: Context){
-            val intent = Intent(context, TimerExpiredReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.cancel(pendingIntent)
-        }
-    }
-
     enum class TimerStatus {
-        STARTED, STOPPED, PAUSED
+        STARTED, STOPPED
     }
 
     private var timerStatus = TimerStatus.STOPPED
@@ -104,8 +87,6 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
             if (mediaPlayer.isPlaying) {
                 Log.d("kesini gak", "is playing")
                 mediaPlayer.stop()
-                mediaPlayer.reset()
-                mediaPlayer.release()
                 // hiding the reset icon
                 imageViewReset!!.visibility = View.GONE
                 // changing stop icon to start icon
