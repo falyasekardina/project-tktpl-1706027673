@@ -57,7 +57,6 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private var twoPane: Boolean = false
     private lateinit var mAuth: FirebaseAuth
     private var firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -79,8 +78,6 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
         initGoogleSignInClient()
         setSupportActionBar(bottomMenuBar)
         initData()
-
-        updateUI(mAuth.currentUser, todoAdapter)
 
     }
 
@@ -112,6 +109,7 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
         todoViewModel = ViewModelProviders.of(this).get(EnlistViewModel::class.java)
         todoViewModel.getAllTodoList().observe(this, Observer {
             todoAdapter.setAllTodoItems(it)
+            updateUI(mAuth.currentUser, todoAdapter)
         })
     }
 
@@ -146,8 +144,11 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
                     FormatStyle.FULL
                 )
             )}"
-            Log.d("jumlah size activity", todoAdapter.itemCount().toString())
-            totalList.text= "You have ${todoAdapter.itemCount()} list(s) to do"
+            if(todoAdapter.itemCount > 0) {
+                totalList.text = "You have ${todoAdapter.itemCount} lists(s) to do"
+            } else {
+                totalList.text= "You have 0 list(s) to do"
+            }
         }
     }
 

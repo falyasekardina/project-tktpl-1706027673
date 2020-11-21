@@ -24,16 +24,12 @@ class EnlistAdapter(todoEvents: ItemListActivity) : RecyclerView.Adapter<EnlistA
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.enlist_item, parent, false)
-        Log.d("jumlah size", todoList.size.toString())
+        Log.d("jumlah size", itemCount.toString())
         return ViewHolder(view)
     }
 
-    fun itemCount() {
-        todoList.size.toString()
-    }
-
     override fun getItemCount(): Int {
-         return todoList.size
+        return todoList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

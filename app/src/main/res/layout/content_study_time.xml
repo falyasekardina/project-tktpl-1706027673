@@ -3,7 +3,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDark">
+    android:background="#eee2dc">
 
     <TextView
         android:id="@+id/textView4"
@@ -13,7 +13,7 @@
         android:textAlignment="center"
         android:fontFamily="@font/poppins_bold"
         android:text="Study Timer"
-        android:textColor="@color/white"
+        android:textColor="#ac3b61"
         android:textSize="50sp" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:fontFamily="@font/poppins_light"
         android:text="@string/description_alarm"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="#ac3b61"
         android:textSize="24sp" />
 
     <ProgressBar
@@ -47,7 +47,7 @@
         android:layout_above="@+id/textViewTime"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="#FFFFFF"
+        android:backgroundTint="#ac3b61"
         android:gravity="center"
         android:hint="@string/hint_minute"
         android:inputType="number"
@@ -55,8 +55,8 @@
         android:maxLines="1"
         android:minEms="5"
         android:text="1"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColor="#ac3b61"
+        android:textColorHint="#ac3b61"
         android:textStyle="bold" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="00:01:00"
-        android:textColor="@color/white"
+        android:textColor="#ac3b61"
         android:textSize="40sp" />
 
     <ImageView
@@ -85,6 +85,6 @@
         android:layout_below="@+id/progressBarCircle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:src="@drawable/ic_start" />
+        android:src="@drawable/ic_play" />
 
 </RelativeLayout>

@@ -78,7 +78,7 @@ class NotificationUtil {
             val notificationSound: Uri =
                 RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val nBuilder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_timer)
+                .setSmallIcon(R.drawable.enlist_main_logo)
                 .setAutoCancel(true)
                 .setDefaults(0)
             if (playSound) nBuilder.setSound(notificationSound)

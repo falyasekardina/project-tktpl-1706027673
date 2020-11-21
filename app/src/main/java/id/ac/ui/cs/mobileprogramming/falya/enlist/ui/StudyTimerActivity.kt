@@ -90,7 +90,7 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
                 // hiding the reset icon
                 imageViewReset!!.visibility = View.GONE
                 // changing stop icon to start icon
-                imageViewStartStop!!.setImageResource(R.drawable.ic_start)
+                imageViewStartStop!!.setImageResource(R.drawable.ic_play)
                 // making edit text editable
                 editTextMinute!!.isEnabled = true
                 NotificationUtil.showTimerStopped(this)
@@ -118,7 +118,7 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
             // hiding the reset icon
             imageViewReset!!.visibility = View.GONE
             // changing stop icon to start icon
-            imageViewStartStop!!.setImageResource(R.drawable.ic_start)
+            imageViewStartStop!!.setImageResource(R.drawable.ic_play)
             // making edit text editable
             editTextMinute!!.isEnabled = true
             // changing the timer status to stopped

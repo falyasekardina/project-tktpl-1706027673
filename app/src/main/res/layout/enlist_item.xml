@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card:cardCornerRadius="5dp"
-    card:cardElevation="5dp"
+    card:cardElevation="6dp"
     card:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -18,9 +18,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:contentDescription="Delete"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:src="@drawable/ic_delete" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +35,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:textSize="18dp"
                 android:maxLines="1"
+                android:textColor="#3F414E"
+                android:fontFamily="@font/poppins_bold"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="@string/title" />
 
@@ -42,10 +46,13 @@
                 android:id="@+id/tv_item_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="16dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                tools:text="@string/content" />
+                android:textColor="#3F414E"
+                android:fontFamily="@font/poppins_medium"
+                tools:text="@string/enter_content" />
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
