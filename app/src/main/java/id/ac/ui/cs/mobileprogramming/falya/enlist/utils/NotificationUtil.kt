@@ -34,7 +34,6 @@ class NotificationUtil {
                     )
                 )
                 .setOngoing(true)
-//                .addAction(R.drawable.ic_baseline_stop, "Stop", stopPendingIntent)
 
             val nManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
