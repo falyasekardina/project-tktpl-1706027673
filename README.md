@@ -13,3 +13,5 @@
 ## Falya Aqiela Sekardina
 ## 1706027673
 ## TKTPL-A
+
+Enlist merupakan aplikasi yang dapat membantu kegiatan sehari-hari dengan fitur yang bisa menyimpan list yang harus dikerjakan dan timer yang berfungsi sebagai penanda waktu belajar.
