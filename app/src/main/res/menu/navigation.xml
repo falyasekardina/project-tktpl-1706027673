@@ -6,9 +6,12 @@
         android:icon="@drawable/ic_timer"
         app:showAsAction="ifRoom"
         android:title="Study Timer" />
-
     <item android:id="@+id/app_bar_signout"
         android:icon="@drawable/ic_signout"
         app:showAsAction="ifRoom"
         android:title="@string/sign_out" />
+    <item android:id="@+id/app_bar_openGL"
+        android:icon="@drawable/ic_opengl"
+        app:showAsAction="ifRoom"
+        android:title="Open GL" />
 </menu>

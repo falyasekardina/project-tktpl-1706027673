@@ -35,6 +35,7 @@ import id.ac.ui.cs.mobileprogramming.falya.enlist.data.db.EnlistRecord
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.createEnlist.CreateEnlistActivity
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistAdapter
 import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.lists.EnlistViewModel
+import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.openGL.GL2JNIActivity
 import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.Constants
 import kotlinx.android.synthetic.main.activity_item_list.*
 import java.text.SimpleDateFormat
@@ -129,6 +130,10 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
                 signOut()
                 return true
             }
+            R.id.app_bar_openGL -> {
+                openGLSample()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -154,6 +159,11 @@ class ItemListActivity : AppCompatActivity(), EnlistAdapter.TodoEvents {
 
     private fun studyTimer() {
         intent = Intent(this, StudyTimerActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openGLSample() {
+        intent = Intent(this, GL2JNIActivity::class.java)
         startActivity(intent)
     }
 
