@@ -197,9 +197,9 @@ class CreateEnlistActivity : AppCompatActivity() {
      */
     private fun showSettingsDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this@CreateEnlistActivity)
-        builder.setTitle("Grant Permissions")
-        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.")
-        builder.setPositiveButton("GOTO SETTINGS") { dialog, which ->
+        builder.setTitle(R.string.title_permission)
+        builder.setMessage(R.string.desc_permission)
+        builder.setPositiveButton(R.string.settings) { dialog, which ->
             dialog.cancel()
             openSettings()
         }

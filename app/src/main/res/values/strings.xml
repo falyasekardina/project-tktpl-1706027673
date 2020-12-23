@@ -17,4 +17,7 @@
     <string name="message_minutes" translatable="false">Please Enter Minutes...</string>
     <string name="home">Home</string>
     <string name="description_alarm">Set your study time to get more focus and keep productive</string>
+    <string name="title_permission">Grant Permissions</string>
+    <string name="desc_permission">This app needs permission to use this feature. You can grant them in app settings.</string>
+    <string name="settings">GOTO SETTINGS</string>
 </resources>

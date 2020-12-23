@@ -16,4 +16,7 @@
     <string name="home">Beranda</string>
     <string name="sign_out">Keluar</string>
     <string name="description_alarm">Atur waktu belajarmu untuk tetap fokus dan produktif</string>
+    <string name="title_permission">Beri Akses</string>
+    <string name="desc_permission">Aplikasi ini membutuhkan izin untuk mengakses fitur ini. Beri akses melalui pengaturan pada aplikasi</string>
+    <string name="settings">pengaturan</string>
 </resources>
