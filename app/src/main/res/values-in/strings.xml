@@ -18,5 +18,7 @@
     <string name="description_alarm">Atur waktu belajarmu untuk tetap fokus dan produktif</string>
     <string name="title_permission">Beri Akses</string>
     <string name="desc_permission">Aplikasi ini membutuhkan izin untuk mengakses fitur ini. Beri akses melalui pengaturan pada aplikasi</string>
+    <string name="title_permission_wifi">Periksa Konektivitas Anda</string>
+    <string name="desc_permission_wifi">Aplikasi ini membutuhkan konektivitas internet. Beri akses melalui pengaturan</string>
     <string name="settings">pengaturan</string>
 </resources>

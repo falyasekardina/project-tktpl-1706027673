@@ -1,12 +1,21 @@
 package id.ac.ui.cs.mobileprogramming.falya.enlist.auth
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,6 +28,7 @@ import id.ac.ui.cs.mobileprogramming.falya.enlist.ui.ItemListActivity
 import id.ac.ui.cs.mobileprogramming.falya.enlist.R
 import id.ac.ui.cs.mobileprogramming.falya.enlist.utils.Constants.USER
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
@@ -33,7 +43,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        checkConnectivity()
         mAuth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -56,6 +66,13 @@ class LoginActivity : AppCompatActivity() {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//            if(checkConnectivity()) {
+//                val account = task.getResult(ApiException::class.java)
+//                firebaseAuthWithGoogle(account!!)
+//            }
+//            else {
+//                showSettingsDialog()
+//            }
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
@@ -63,10 +80,43 @@ class LoginActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Login", "Google sign in failed", e)
+//                showSettingsDialog()
                 // ...
             }
 
         }
+    }
+
+    private fun showSettingsDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@LoginActivity)
+        builder.setTitle(R.string.title_permission_wifi)
+        builder.setMessage(R.string.desc_permission_wifi)
+        builder.show()
+    }
+
+    private fun checkConnectivity(){
+        val cm: ConnectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val builder: NetworkRequest.Builder = NetworkRequest.Builder()
+        cm.registerNetworkCallback(
+            builder.build(),
+            object : ConnectivityManager.NetworkCallback() {
+
+                override fun onAvailable(network: Network) {
+                    lifecycleScope.launch {
+                        Log.i("MainActivity", "onAvailable!")
+                    }
+                }
+
+                override fun onLost(network: Network) {
+                    lifecycleScope.launch {
+                        Log.i("MainActivity", "onLost!")
+                        showSettingsDialog()
+                    }
+                }
+            }
+        )
     }
 
     private fun initAuthViewModel() {
@@ -104,8 +154,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("Login", "signInWithCredential:failure", task.exception)
-                    Toast.makeText(this, "Auth Failed", Toast.LENGTH_LONG).show()
-                    updateUI(null)
+                    showSettingsDialog()
                 }
 
                 // ...
