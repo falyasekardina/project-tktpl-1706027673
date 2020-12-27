@@ -167,6 +167,7 @@ class StudyTimerActivity : AppCompatActivity(), View.OnClickListener {
                 timerStatus = TimerStatus.STOPPED
                 stopCountDownTimer()
                 mediaPlayer.start()
+                mediaPlayer.isLooping = true
                 NotificationUtil.showTimerStopped(this@StudyTimerActivity)
             }
         }.start()
