@@ -32,7 +32,7 @@ import java.io.IOException
  * @since 08/11/18
  */
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class CreateEnlistActivity : AppCompatActivity() {
+class   CreateEnlistActivity : AppCompatActivity() {
 
     var todoRecord: EnlistRecord? = null
     var imageUploaded: String = ""

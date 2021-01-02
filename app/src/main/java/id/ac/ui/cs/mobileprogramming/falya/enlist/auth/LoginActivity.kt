@@ -66,13 +66,6 @@ class LoginActivity : AppCompatActivity() {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-//            if(checkConnectivity()) {
-//                val account = task.getResult(ApiException::class.java)
-//                firebaseAuthWithGoogle(account!!)
-//            }
-//            else {
-//                showSettingsDialog()
-//            }
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
@@ -80,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("Login", "Google sign in failed", e)
-//                showSettingsDialog()
+                showSettingsDialog()
                 // ...
             }
 
